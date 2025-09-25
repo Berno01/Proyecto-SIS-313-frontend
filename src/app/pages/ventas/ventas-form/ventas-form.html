@@ -1,0 +1,22 @@
+<form [formGroup]="generalesForm" (ngSubmit)="submitGenerales()">
+  <h3>Datos Generales</h3>
+  <input formControlName="nombreCliente" placeholder="Nombre Cliente" required>
+  <button type="submit">Actualizar</button>
+</form>
+
+<form [formGroup]="repuestoForm" (ngSubmit)="submitRepuesto()">
+  <h3>Agregar Repuesto</h3>
+  <input formControlName="id_repuesto" type="number" placeholder="ID Repuesto" required>
+  <button type="button" (click)="buscarRepuesto()">Buscar</button> <!-- Botón para fetch -->
+  
+  <div *ngIf="fetchedRepuesto.precio_venta > 0">
+    <p>Nombre: {{ fetchedRepuesto.nombre_repuesto || 'N/A' }}</p>
+    <p>Precio Compra: {{ fetchedRepuesto.precio_compra }}</p>
+    <p>Precio Venta: {{ fetchedRepuesto.precio_venta }}</p>
+  </div>
+  
+  <input formControlName="cant_venta" type="number" placeholder="Cantidad" required>
+  <button type="submit">Agregar</button>
+  
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+</form>

@@ -1,0 +1,29 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID Repuesto</th>
+      <th>Nombre</th>
+      <th>Cantidad</th>
+      <th>Precio Compra</th>
+      <th>Precio Venta</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rep of repuestos()">
+      <td>{{ rep.id_repuesto }}</td>
+      <td>{{ rep.nombre_repuesto || 'N/A' }}</td>
+      <td>{{ rep.cant_venta }}</td>
+      <td>{{ rep.precio_compra }}</td>
+      <td>{{ rep.precio_venta }}</td>
+      <td>{{ rep.total }}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5">Total General</td>
+      <td>{{ totalGeneral() }}</td>
+    </tr>
+  </tfoot>
+</table>
+<p *ngIf="repuestos().length === 0">No hay repuestos agregados.</p>
