@@ -1,0 +1,69 @@
+<div class="compras-container">
+  <div class="page-header">
+    <h1>Historial de Compras</h1>
+    <button class="btn btn-primary" (click)="nuevaCompra()">+ Nueva Compra</button>
+  </div>
+
+  <!-- Mensajes -->
+  <div *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando compras...</p>
+  </div>
+
+  <!-- Tabla de Compras -->
+  <div *ngIf="!loading" class="table-container">
+    <!-- Empty State -->
+    <div *ngIf="compras.length === 0" class="empty-state">
+      <p>No se encontraron compras</p>
+      <button class="btn btn-primary" (click)="nuevaCompra()">Crear primera compra</button>
+    </div>
+
+    <!-- Tabla -->
+    <table *ngIf="compras.length > 0" class="compras-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Proveedor</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let compra of compras">
+          <td class="id-cell">{{ compra.idCompra }}</td>
+          <td class="proveedor-cell">{{ compra.nombreProveedor }}</td>
+          <td class="fecha-cell">{{ formatearFecha(compra.fechaCompra) }}</td>
+          <td class="total-cell">{{ compra.total.toFixed(2) }} Bs.</td>
+          <td class="estado-cell">
+            <span class="estado-badge" [ngClass]="getEstadoClass(compra.estadoCompra)">
+              {{ getEstadoTexto(compra.estadoCompra) }}
+            </span>
+          </td>
+          <td class="acciones-cell">
+            <button
+              class="btn-action btn-edit"
+              (click)="editarCompra(compra.idCompra)"
+              title="Editar compra"
+            >
+              Editar
+            </button>
+            <button
+              class="btn-action btn-delete"
+              (click)="eliminarCompra(compra.idCompra, compra.nombreProveedor)"
+              title="Eliminar compra"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

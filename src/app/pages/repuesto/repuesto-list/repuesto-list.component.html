@@ -1,0 +1,81 @@
+<div class="repuesto-list-container">
+  <div class="header">
+    <h1>Gestión de Repuestos</h1>
+    <button class="btn-primary" (click)="nuevoRepuesto()" [disabled]="isLoading">
+      + Nuevo Repuesto
+    </button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando repuestos...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    {{ errorMessage }}
+    <button class="btn-retry" (click)="cargarRepuestos()">Reintentar</button>
+  </div>
+
+  <!-- Repuestos Table -->
+  <div *ngIf="!isLoading && !errorMessage" class="table-container">
+    <table *ngIf="repuestos.length > 0" class="repuestos-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Repuesto</th>
+          <th>Stock</th>
+          <th>Costo</th>
+          <th>Precio Sugerido</th>
+          <th>Estado</th>
+          <th>Categorías</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let repuesto of repuestos">
+          <td>{{ repuesto.idRepuesto }}</td>
+          <td class="nombre-repuesto">{{ repuesto.nombreRepuesto }}</td>
+          <td class="text-center">
+            <span [class.stock-bajo]="repuesto.stockActual < 10">
+              {{ repuesto.stockActual }}
+            </span>
+          </td>
+          <td class="text-right">Bs.{{ repuesto.costoRepuesto.toFixed(2) }}</td>
+          <td class="text-right">Bs.{{ repuesto.precioSugerido.toFixed(2) }}</td>
+          <td>
+            <span class="badge" [ngClass]="obtenerClaseEstado(repuesto.estadoRepuesto)">
+              {{ obtenerTextoEstado(repuesto.estadoRepuesto) }}
+            </span>
+          </td>
+          <td class="categorias-cell">
+            {{ obtenerNombresCategorias(repuesto) }}
+          </td>
+          <td class="actions">
+            <button
+              class="btn-edit"
+              (click)="editarRepuesto(repuesto.idRepuesto)"
+              title="Editar repuesto"
+            >
+              Editar
+            </button>
+            <button
+              class="btn-delete"
+              (click)="eliminarRepuesto(repuesto.idRepuesto, repuesto.nombreRepuesto)"
+              title="Eliminar repuesto"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div *ngIf="repuestos.length === 0" class="empty-state">
+      <p>No hay repuestos registrados</p>
+      <button class="btn-primary" (click)="nuevoRepuesto()">Crear primer repuesto</button>
+    </div>
+  </div>
+</div>

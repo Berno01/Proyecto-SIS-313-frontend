@@ -1,0 +1,70 @@
+<div class="ventas-container">
+  <div class="page-header">
+    <h1>Historial de Ventas</h1>
+    <button class="btn btn-primary" (click)="nuevaVenta()">+ Nueva Venta</button>
+  </div>
+
+  <!-- Mensajes -->
+  <div *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando ventas...</p>
+  </div>
+
+  <!-- Tabla de Ventas -->
+  <div *ngIf="!loading" class="table-container">
+    <!-- Empty State -->
+    <div *ngIf="ventas.length === 0" class="empty-state">
+      <p>No se encontraron ventas</p>
+      <button class="btn btn-primary" (click)="nuevaVenta()">Crear primera venta</button>
+    </div>
+
+    <!-- Tabla -->
+    <table *ngIf="ventas.length > 0" class="ventas-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Descuento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let venta of ventas">
+          <td class="id-cell">{{ venta.idVenta }}</td>
+          <td class="cliente-cell">{{ venta.nombreCliente }}</td>
+          <td class="fecha-cell">{{ formatearFecha(venta.fechaVenta) }}</td>
+          <td class="total-cell">{{ venta.total.toFixed(2) }} Bs.</td>
+          <td class="descuento-cell">
+            <span *ngIf="venta.descuentoTotal > 0" class="descuento-badge">
+              -{{ venta.descuentoTotal.toFixed(2) }} Bs.
+            </span>
+            <span *ngIf="venta.descuentoTotal === 0">-</span>
+          </td>
+          <td class="acciones-cell">
+            <button
+              class="btn-action btn-edit"
+              (click)="editarVenta(venta.idVenta)"
+              title="Editar venta"
+            >
+              Editar
+            </button>
+            <button
+              class="btn-action btn-delete"
+              (click)="eliminarVenta(venta.idVenta)"
+              title="Eliminar venta"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
