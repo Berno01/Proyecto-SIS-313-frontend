@@ -8,6 +8,7 @@ import { CategoriaListComponent } from './pages/categoria/categoria-list/categor
 import { CategoriaFormComponent } from './pages/categoria/categoria-form/categoria-form.component';
 import { RepuestoListComponent } from './pages/repuesto/repuesto-list/repuesto-list.component';
 import { RepuestoFormComponent } from './pages/repuesto/repuesto-form/repuesto-form.component';
+import { RepuestoFormCompletoComponent } from './pages/repuesto/repuesto-form-completo/repuesto-form-completo.component';
 import { DashboardFlashComponent } from './pages/dashboard-flash/dashboard-flash.component';
 
 export const routes: Routes = [
@@ -24,5 +25,7 @@ export const routes: Routes = [
   { path: 'repuestos', component: RepuestoListComponent },
   { path: 'repuesto', component: RepuestoFormComponent },
   { path: 'repuesto/:id', component: RepuestoFormComponent },
+  { path: 'repuestos/nuevo', component: RepuestoFormCompletoComponent },
+  { path: 'repuestos/editar/:id', component: RepuestoFormCompletoComponent },
   { path: 'dashboard-flash', component: DashboardFlashComponent },
 ];

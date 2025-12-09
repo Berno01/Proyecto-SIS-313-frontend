@@ -129,12 +129,12 @@
             <label>
               <input
                 type="checkbox"
-                [value]="categoria.idCategoria"
-                [checked]="isCategoriaSelecionada(categoria.idCategoria!)"
-                (change)="onCategoriaChange($event, categoria.idCategoria!)"
+                [value]="categoria.id"
+                [checked]="isCategoriaSelecionada(categoria.id!)"
+                (change)="onCategoriaChange($event, categoria.id!)"
                 [disabled]="isSaving"
               />
-              <span>{{ categoria.nombreCategoria }}</span>
+              <span>{{ categoria.nombre }}</span>
             </label>
           </div>
         </div>

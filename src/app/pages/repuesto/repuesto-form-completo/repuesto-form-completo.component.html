@@ -1,0 +1,356 @@
+<div class="repuesto-form-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>{{ modoEdicion ? 'Editar Repuesto' : 'Crear Nuevo Repuesto' }}</h1>
+    <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isSaving">
+      Cancelar
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- Formulario -->
+  <form [formGroup]="repuestoForm" *ngIf="!isLoading" (ngSubmit)="guardarRepuesto()">
+    <!-- Mensaje de Error Global -->
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Sección: Datos Básicos -->
+    <div class="form-section">
+      <h2 class="section-title">📦 Datos Básicos</h2>
+
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label for="nombreRepuesto">Nombre del Repuesto *</label>
+          <input
+            type="text"
+            id="nombreRepuesto"
+            class="form-control"
+            formControlName="nombreRepuesto"
+            placeholder="Ej: Filtro de aceite, Pastillas de freno delanteras"
+            [class.is-invalid]="esInvalido('nombreRepuesto')"
+          />
+          <div class="invalid-feedback" *ngIf="esInvalido('nombreRepuesto')">
+            El nombre es requerido (mínimo 3 caracteres)
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="stockActual">Stock Actual *</label>
+          <input
+            type="number"
+            id="stockActual"
+            class="form-control"
+            formControlName="stockActual"
+            min="0"
+            [class.is-invalid]="esInvalido('stockActual')"
+          />
+          <div class="invalid-feedback" *ngIf="esInvalido('stockActual')">Stock requerido</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="costoRepuesto">Costo (Compra) *</label>
+          <div class="input-group">
+            <span class="input-group-text">Bs.</span>
+            <input
+              type="number"
+              id="costoRepuesto"
+              class="form-control"
+              formControlName="costoRepuesto"
+              min="0"
+              step="0.01"
+              [class.is-invalid]="esInvalido('costoRepuesto')"
+            />
+          </div>
+          <div class="invalid-feedback" *ngIf="esInvalido('costoRepuesto')">
+            Costo requerido
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="precioSugerido">Precio Sugerido (Venta) *</label>
+          <div class="input-group">
+            <span class="input-group-text">Bs.</span>
+            <input
+              type="number"
+              id="precioSugerido"
+              class="form-control"
+              formControlName="precioSugerido"
+              min="0"
+              step="0.01"
+              [class.is-invalid]="esInvalido('precioSugerido')"
+            />
+          </div>
+          <div class="invalid-feedback" *ngIf="esInvalido('precioSugerido')">
+            Precio sugerido requerido
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Datos Avanzados -->
+    <div class="form-section">
+      <h2 class="section-title">⚙️ Datos Avanzados</h2>
+
+      <div class="form-group">
+        <label for="tagsBusqueda">Tags de Búsqueda (Opcional)</label>
+        <textarea
+          id="tagsBusqueda"
+          class="form-control"
+          formControlName="tagsBusqueda"
+          rows="2"
+          placeholder="Ej: filtro, aceite, motor, toyota, honda"
+        ></textarea>
+        <small class="form-text text-muted"
+          >Palabras clave separadas por comas para facilitar búsquedas</small
+        >
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="idSistema">Sistema del Vehículo</label>
+          <div class="input-with-button">
+            <select id="idSistema" class="form-control" formControlName="idSistema">
+              <option [value]="null">-- Seleccionar Sistema --</option>
+              <option *ngFor="let sistema of listaSistemas" [value]="sistema.id">
+                {{ sistema.nombre }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              (click)="abrirModalSistema()"
+              title="Crear nuevo sistema"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label>Categorías *</label>
+          <div class="categorias-section">
+            <!-- Chips de categorías seleccionadas -->
+            <div class="categorias-seleccionadas">
+              <span
+                *ngFor="let idCategoria of repuestoForm.get('idsCategorias')?.value"
+                class="categoria-chip"
+              >
+                {{ obtenerNombreCategoria(idCategoria) }}
+                <button
+                  type="button"
+                  class="btn-remove-chip"
+                  (click)="removerCategoria(idCategoria)"
+                  title="Quitar categoría"
+                >
+                  ×
+                </button>
+              </span>
+              <span
+                *ngIf="repuestoForm.get('idsCategorias')?.value?.length === 0"
+                class="text-muted-small"
+              >
+                Ninguna categoría seleccionada
+              </span>
+            </div>
+
+            <!-- Botón para abrir selector -->
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm mt-2"
+              (click)="abrirSelectorCategorias()"
+            >
+              + Agregar Categorías
+            </button>
+
+            <div
+              *ngIf="esInvalido('idsCategorias')"
+              class="invalid-feedback d-block"
+            >
+              Debe seleccionar al menos una categoría
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Compatibilidades -->
+    <div class="form-section">
+      <h2 class="section-title">🚗 Compatibilidades con Vehículos</h2>
+
+      <div class="compatibilidades-header">
+        <p class="text-muted">
+          Define qué vehículos son compatibles con este repuesto (año de inicio/fin opcional)
+        </p>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="agregarCompatibilidad()"
+          [disabled]="isSaving"
+        >
+          + Agregar Compatibilidad
+        </button>
+      </div>
+
+      <!-- Lista de Compatibilidades -->
+      <div formArrayName="compatibilidades" class="compatibilidades-list">
+        <div
+          *ngFor="let compatibilidad of compatibilidades.controls; let i = index"
+          [formGroupName]="i"
+          class="compatibilidad-item"
+        >
+          <div class="compatibilidad-number">{{ i + 1 }}</div>
+
+          <div class="compatibilidad-fields">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Vehículo *</label>
+                <div class="input-with-button">
+                  <select
+                    class="form-control"
+                    formControlName="vehiculoId"
+                    [class.is-invalid]="esInvalidoCompatibilidad(i, 'vehiculoId')"
+                  >
+                    <option [value]="null">-- Seleccionar Vehículo --</option>
+                    <option *ngFor="let vehiculo of listaVehiculos" [value]="vehiculo.id">
+                      {{ vehiculo.marca }} {{ vehiculo.modelo }}
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    (click)="abrirModalVehiculo(i)"
+                    title="Crear nuevo vehículo"
+                  >
+                    +
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="esInvalidoCompatibilidad(i, 'vehiculoId')">
+                  Vehículo requerido
+                </div>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label>Año Inicio</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="anioInicio"
+                  placeholder="2010"
+                  min="1900"
+                  max="2100"
+                />
+              </div>
+
+              <div class="form-group col-md-3">
+                <label>Año Fin</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="anioFin"
+                  placeholder="2020"
+                  min="1900"
+                  max="2100"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm btn-eliminar"
+            (click)="eliminarCompatibilidad(i)"
+            title="Eliminar compatibilidad"
+            [disabled]="isSaving"
+          >
+            🗑️
+          </button>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="compatibilidades.length === 0" class="empty-state">
+          <p>No hay compatibilidades definidas. Haga clic en "Agregar Compatibilidad" para comenzar.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="cancelar()" [disabled]="isSaving">
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="isSaving || repuestoForm.invalid">
+        <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+        {{ isSaving ? 'Guardando...' : (modoEdicion ? 'Actualizar' : 'Guardar') }}
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Modal Selector de Categorías -->
+<div *ngIf="modalCategoriasVisible" class="modal-overlay" (click)="cerrarSelectorCategorias()">
+  <div class="modal-selector" (click)="$event.stopPropagation()">
+    <div class="modal-selector-header">
+      <h5>Seleccionar Categorías</h5>
+      <button
+        type="button"
+        class="btn-close-modal"
+        (click)="cerrarSelectorCategorias()"
+      >
+        ×
+      </button>
+    </div>
+    <div class="modal-selector-body">
+      <div class="categorias-grid">
+        <label
+          *ngFor="let categoria of listaCategorias"
+          class="categoria-card"
+          [class.selected]="isCategoriaSeleccionada(categoria.id!)"
+        >
+          <input
+            type="checkbox"
+            [checked]="isCategoriaSeleccionada(categoria.id!)"
+            (change)="toggleCategoria(categoria.id!)"
+          />
+          <span>{{ categoria.nombre }}</span>
+        </label>
+      </div>
+      <button
+        type="button"
+        class="btn btn-success btn-sm mt-3"
+        (click)="abrirModalCategoria()"
+      >
+        + Crear Nueva Categoría
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modales -->
+<app-modal-crear-categoria
+  [visible]="modalCategoriaVisible"
+  (cerrar)="cerrarModales()"
+  (registroCreado)="onCategoriaCreada($event)"
+>
+</app-modal-crear-categoria>
+
+<app-modal-crear-vehiculo
+  [visible]="modalVehiculoVisible"
+  (cerrar)="cerrarModales()"
+  (registroCreado)="onVehiculoCreado($event)"
+>
+</app-modal-crear-vehiculo>
+
+<app-modal-crear-sistema
+  [visible]="modalSistemaVisible"
+  (cerrar)="cerrarModales()"
+  (registroCreado)="onSistemaCreado($event)"
+>
+</app-modal-crear-sistema>

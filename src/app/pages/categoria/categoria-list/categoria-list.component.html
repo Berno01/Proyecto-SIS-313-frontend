@@ -30,19 +30,19 @@
       </thead>
       <tbody>
         <tr *ngFor="let categoria of categorias">
-          <td>{{ categoria.idCategoria }}</td>
-          <td>{{ categoria.nombreCategoria }}</td>
+          <td>{{ categoria.id }}</td>
+          <td>{{ categoria.nombre }}</td>
           <td class="actions">
             <button
               class="btn-edit"
-              (click)="editarCategoria(categoria.idCategoria!)"
+              (click)="editarCategoria(categoria.id!)"
               title="Editar categoría"
             >
               Editar
             </button>
             <button
               class="btn-delete"
-              (click)="eliminarCategoria(categoria.idCategoria!, categoria.nombreCategoria)"
+              (click)="eliminarCategoria(categoria.id!, categoria.nombre)"
               title="Eliminar categoría"
             >
               Eliminar

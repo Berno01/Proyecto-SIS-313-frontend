@@ -1,16 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { RepuestoService } from '../services/repuesto.service';
 import { RepuestoResponse } from '../models/repuesto.model';
+import { RepuestoBusquedaDTO } from '../models/repuesto-busqueda.model';
+import { debounceTime, Subject } from 'rxjs';
 
 /**
- * Componente para listar todos los repuestos
+ * Componente para listar todos los repuestos con búsqueda inteligente
  */
 @Component({
   selector: 'app-repuesto-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './repuesto-list.component.html',
   styleUrl: './repuesto-list.component.css',
 })
@@ -18,28 +21,45 @@ export class RepuestoListComponent implements OnInit {
   private repuestoService = inject(RepuestoService);
   private router = inject(Router);
 
-  repuestos: RepuestoResponse[] = [];
+  // Estado para búsqueda
+  repuestosOriginal: RepuestoBusquedaDTO[] = [];
+  repuestosFiltrados: RepuestoBusquedaDTO[] = [];
+  terminoBusqueda: string = '';
+  private searchSubject = new Subject<string>();
+
+  // Estado para UI
   isLoading: boolean = false;
   errorMessage: string = '';
 
   ngOnInit(): void {
-    this.cargarRepuestos();
+    this.configurarBusqueda();
+    this.cargarCatalogoBusqueda();
   }
 
   /**
-   * Carga todos los repuestos desde el servidor
+   * Configura el debounce para la búsqueda
    */
-  cargarRepuestos(): void {
+  private configurarBusqueda(): void {
+    this.searchSubject.pipe(debounceTime(300)).subscribe((termino) => {
+      this.filtrar(termino);
+    });
+  }
+
+  /**
+   * Carga el catálogo de repuestos optimizado para búsqueda
+   */
+  cargarCatalogoBusqueda(): void {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.repuestoService.getAllRepuestos().subscribe({
+    this.repuestoService.obtenerCatalogoBusqueda().subscribe({
       next: (data) => {
-        this.repuestos = data;
+        this.repuestosOriginal = data;
+        this.repuestosFiltrados = data;
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error al cargar repuestos:', error);
+        console.error('Error al cargar catálogo de búsqueda:', error);
         this.errorMessage = 'Error al cargar los repuestos. Por favor, intente nuevamente.';
         this.isLoading = false;
       },
@@ -47,18 +67,43 @@ export class RepuestoListComponent implements OnInit {
   }
 
   /**
-   * Navega al formulario para crear un nuevo repuesto
+   * Maneja el evento de búsqueda con debounce
+   * @param termino Término de búsqueda ingresado
    */
-  nuevoRepuesto(): void {
-    this.router.navigate(['/repuesto']);
+  onBuscar(termino: string): void {
+    this.terminoBusqueda = termino;
+    this.searchSubject.next(termino);
   }
 
   /**
-   * Navega al formulario de edición de un repuesto
+   * Filtra los repuestos según el término de búsqueda
+   * @param termino Término de búsqueda
+   */
+  private filtrar(termino: string): void {
+    if (!termino || termino.trim() === '') {
+      this.repuestosFiltrados = this.repuestosOriginal;
+      return;
+    }
+
+    const terminoLower = termino.toLowerCase().trim();
+    this.repuestosFiltrados = this.repuestosOriginal.filter((repuesto) =>
+      repuesto.search_index.toLowerCase().includes(terminoLower)
+    );
+  }
+
+  /**
+   * Navega al formulario para crear un nuevo repuesto
+   */
+  nuevoRepuesto(): void {
+    this.router.navigate(['/repuestos/nuevo']);
+  }
+
+  /**
+   * Navega al formulario para editar un repuesto existente
    * @param id ID del repuesto a editar
    */
   editarRepuesto(id: number): void {
-    this.router.navigate(['/repuesto', id]);
+    this.router.navigate(['/repuestos/editar', id]);
   }
 
   /**
@@ -73,7 +118,7 @@ export class RepuestoListComponent implements OnInit {
       this.repuestoService.eliminarRepuesto(id).subscribe({
         next: (response) => {
           alert('Repuesto eliminado exitosamente');
-          this.cargarRepuestos(); // Recargar la lista
+          this.cargarCatalogoBusqueda(); // Recargar la lista
         },
         error: (error) => {
           console.error('Error al eliminar repuesto:', error);
@@ -85,32 +130,11 @@ export class RepuestoListComponent implements OnInit {
   }
 
   /**
-   * Obtiene los nombres de las categorías como string
-   * @param repuesto Repuesto con sus categorías
-   * @returns String con nombres de categorías separados por coma
+   * Obtiene la clase CSS para indicar stock bajo
+   * @param stock Stock actual del repuesto
+   * @returns Clase CSS
    */
-  obtenerNombresCategorias(repuesto: RepuestoResponse): string {
-    if (!repuesto.categorias || repuesto.categorias.length === 0) {
-      return 'Sin categoría';
-    }
-    return repuesto.categorias.map((cat) => cat.nombreCategoria).join(', ');
-  }
-
-  /**
-   * Obtiene la clase CSS para el badge de estado
-   * @param estado Estado del repuesto
-   * @returns Clase CSS para el badge
-   */
-  obtenerClaseEstado(estado: boolean): string {
-    return estado ? 'badge-active' : 'badge-inactive';
-  }
-
-  /**
-   * Obtiene el texto del estado
-   * @param estado Estado del repuesto
-   * @returns Texto del estado
-   */
-  obtenerTextoEstado(estado: boolean): string {
-    return estado ? 'Activo' : 'Inactivo';
+  obtenerClaseStock(stock: number): string {
+    return stock < 10 ? 'stock-bajo' : '';
   }
 }

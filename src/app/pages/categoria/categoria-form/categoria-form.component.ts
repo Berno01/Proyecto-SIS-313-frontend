@@ -69,8 +69,8 @@ export class CategoriaFormComponent implements OnInit {
     this.categoriaService.getCategoriaById(id).subscribe({
       next: (categoria) => {
         this.categoriaForm.patchValue({
-          idCategoria: categoria.idCategoria,
-          nombreCategoria: categoria.nombreCategoria,
+          idCategoria: categoria.id,
+          nombreCategoria: categoria.nombre,
         });
         this.isLoading = false;
       },
@@ -94,10 +94,14 @@ export class CategoriaFormComponent implements OnInit {
     }
 
     this.isSaving = true;
-    const categoria: Categoria = this.categoriaForm.value;
+    const formValue = this.categoriaForm.value;
 
     if (this.modoEdicion) {
       // Actualizar categoría existente
+      const categoria: Categoria = {
+        id: formValue.idCategoria,
+        nombre: formValue.nombreCategoria,
+      };
       this.categoriaService.actualizarCategoria(categoria).subscribe({
         next: (response) => {
           alert('Categoría actualizada exitosamente');
@@ -111,8 +115,10 @@ export class CategoriaFormComponent implements OnInit {
       });
     } else {
       // Crear nueva categoría
-      categoria.idCategoria = null;
-      this.categoriaService.crearCategoria(categoria).subscribe({
+      const request: any = {
+        nombre_categoria: formValue.nombreCategoria
+      };
+      this.categoriaService.crearCategoria(request).subscribe({
         next: (response) => {
           alert('Categoría creada exitosamente');
           this.router.navigate(['/categorias']);

@@ -6,6 +6,21 @@
     </button>
   </div>
 
+  <!-- Buscador -->
+  <div *ngIf="!isLoading && !errorMessage" class="search-container">
+    <input
+      type="text"
+      class="form-control mb-3"
+      placeholder="Buscar repuesto, auto, sistema..."
+      [(ngModel)]="terminoBusqueda"
+      (input)="onBuscar(terminoBusqueda)"
+      [disabled]="isLoading"
+    />
+    <small class="text-muted" *ngIf="repuestosFiltrados.length !== repuestosOriginal.length">
+      Mostrando {{ repuestosFiltrados.length }} de {{ repuestosOriginal.length }} repuestos
+    </small>
+  </div>
+
   <!-- Loading Spinner -->
   <div *ngIf="isLoading" class="loading">
     <div class="spinner"></div>
@@ -15,54 +30,42 @@
   <!-- Error Message -->
   <div *ngIf="errorMessage && !isLoading" class="error-message">
     {{ errorMessage }}
-    <button class="btn-retry" (click)="cargarRepuestos()">Reintentar</button>
+    <button class="btn-retry" (click)="cargarCatalogoBusqueda()">Reintentar</button>
   </div>
 
   <!-- Repuestos Table -->
   <div *ngIf="!isLoading && !errorMessage" class="table-container">
-    <table *ngIf="repuestos.length > 0" class="repuestos-table">
+    <table *ngIf="repuestosFiltrados.length > 0" class="repuestos-table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Nombre Repuesto</th>
           <th>Stock</th>
-          <th>Costo</th>
-          <th>Precio Sugerido</th>
-          <th>Estado</th>
-          <th>Categorías</th>
+          <th>Precio</th>
+          <th>Sistema</th>
+          <th>Compatibilidad</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let repuesto of repuestos">
-          <td>{{ repuesto.idRepuesto }}</td>
-          <td class="nombre-repuesto">{{ repuesto.nombreRepuesto }}</td>
+        <tr *ngFor="let repuesto of repuestosFiltrados">
+          <td>{{ repuesto.id }}</td>
+          <td class="nombre-repuesto">{{ repuesto.nombre }}</td>
           <td class="text-center">
-            <span [class.stock-bajo]="repuesto.stockActual < 10">
-              {{ repuesto.stockActual }}
+            <span [ngClass]="obtenerClaseStock(repuesto.stock)">
+              {{ repuesto.stock }}
             </span>
           </td>
-          <td class="text-right">Bs.{{ repuesto.costoRepuesto.toFixed(2) }}</td>
-          <td class="text-right">Bs.{{ repuesto.precioSugerido.toFixed(2) }}</td>
-          <td>
-            <span class="badge" [ngClass]="obtenerClaseEstado(repuesto.estadoRepuesto)">
-              {{ obtenerTextoEstado(repuesto.estadoRepuesto) }}
-            </span>
-          </td>
-          <td class="categorias-cell">
-            {{ obtenerNombresCategorias(repuesto) }}
-          </td>
+          <td class="text-right">Bs.{{ repuesto.precio.toFixed(2) }}</td>
+          <td class="sistema-cell">{{ repuesto.sistema }}</td>
+          <td class="compatibilidad-cell">{{ repuesto.compatibilidad_resumen }}</td>
           <td class="actions">
-            <button
-              class="btn-edit"
-              (click)="editarRepuesto(repuesto.idRepuesto)"
-              title="Editar repuesto"
-            >
+            <button class="btn-edit" (click)="editarRepuesto(repuesto.id)" title="Editar repuesto">
               Editar
             </button>
             <button
               class="btn-delete"
-              (click)="eliminarRepuesto(repuesto.idRepuesto, repuesto.nombreRepuesto)"
+              (click)="eliminarRepuesto(repuesto.id, repuesto.nombre)"
               title="Eliminar repuesto"
             >
               Eliminar
@@ -73,9 +76,23 @@
     </table>
 
     <!-- Empty State -->
-    <div *ngIf="repuestos.length === 0" class="empty-state">
+    <div
+      *ngIf="repuestosFiltrados.length === 0 && repuestosOriginal.length === 0"
+      class="empty-state"
+    >
       <p>No hay repuestos registrados</p>
       <button class="btn-primary" (click)="nuevoRepuesto()">Crear primer repuesto</button>
+    </div>
+
+    <!-- No Results State -->
+    <div
+      *ngIf="repuestosFiltrados.length === 0 && repuestosOriginal.length > 0"
+      class="empty-state"
+    >
+      <p>No se encontraron repuestos con el término "{{ terminoBusqueda }}"</p>
+      <button class="btn-secondary" (click)="terminoBusqueda = ''; onBuscar('')">
+        Limpiar búsqueda
+      </button>
     </div>
   </div>
 </div>

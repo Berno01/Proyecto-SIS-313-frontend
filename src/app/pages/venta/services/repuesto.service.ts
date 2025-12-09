@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Repuesto } from '../models/repuesto.model';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Servicio para gestionar operaciones relacionadas con Repuestos
@@ -10,7 +11,7 @@ import { Repuesto } from '../models/repuesto.model';
   providedIn: 'root',
 })
 export class RepuestoService {
-  private readonly API_URL = 'http://localhost:8080/api/ventas/repuesto';
+  private readonly API_URL = `${environment.apiUrl}/ventas/repuesto`;
 
   constructor(private http: HttpClient) {}
 

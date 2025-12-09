@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CompraRequest, CompraResponse } from '../models/compra.model';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Servicio para gestionar operaciones relacionadas con Compras
@@ -10,7 +11,7 @@ import { CompraRequest, CompraResponse } from '../models/compra.model';
   providedIn: 'root',
 })
 export class CompraService {
-  private readonly API_URL = 'http://localhost:8080/api/compras';
+  private readonly API_URL = `${environment.apiUrl}/compras`;
 
   constructor(private http: HttpClient) {}
 

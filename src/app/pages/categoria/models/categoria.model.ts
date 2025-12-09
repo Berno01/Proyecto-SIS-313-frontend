@@ -6,16 +6,13 @@
  * Modelo para recibir datos de categoría desde la API (Response en camelCase)
  */
 export interface Categoria {
-  idCategoria: number | null;
-  nombreCategoria: string;
-  estadoCategoria?: boolean;
+  id: number | null;
+  nombre: string;
 }
 
 /**
  * Modelo para enviar datos de categoría a la API (Request en snake_case)
  */
 export interface CategoriaRequest {
-  id_categoria: number | null;
   nombre_categoria: string;
-  estado_categoria?: boolean;
 }

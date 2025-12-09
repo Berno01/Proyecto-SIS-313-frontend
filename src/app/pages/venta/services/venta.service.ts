@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Venta } from '../models/venta.model';
 import { VentaResponse } from '../models/venta-response.model';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Servicio para gestionar operaciones relacionadas con Ventas
@@ -11,7 +12,7 @@ import { VentaResponse } from '../models/venta-response.model';
   providedIn: 'root',
 })
 export class VentaService {
-  private readonly API_URL = 'http://localhost:8080/api/ventas';
+  private readonly API_URL = `${environment.apiUrl}/ventas`;
 
   constructor(private http: HttpClient) {}
 

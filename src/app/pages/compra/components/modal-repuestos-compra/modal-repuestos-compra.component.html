@@ -51,7 +51,7 @@
                     {{ repuesto.stockRepuesto }}
                   </span>
                 </td>
-                <td>${{ repuesto.costoRepuesto.toFixed(2) }}</td>
+                <td>Bs.{{ repuesto.costoRepuesto.toFixed(2) }}</td>
                 <td>
                   <button class="btn-seleccionar" (click)="seleccionarRepuesto(repuesto)">
                     Seleccionar
@@ -79,7 +79,7 @@
             </div>
             <div class="info-item">
               <span class="label">Costo del Repuesto:</span>
-              <span class="value precio">${{ repuestoSeleccionado.costoRepuesto.toFixed(2) }}</span>
+              <span class="value precio">Bs.{{ repuestoSeleccionado.costoRepuesto.toFixed(2) }}</span>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@
               "
             />
             <small class="hint"
-              >Costo base: ${{ repuestoSeleccionado.costoRepuesto.toFixed(2) }}</small
+              >Costo base: Bs.{{ repuestoSeleccionado.costoRepuesto.toFixed(2) }}</small
             >
             <div
               *ngIf="
@@ -146,7 +146,7 @@
 
           <div class="subtotal-display">
             <span class="subtotal-label">Subtotal:</span>
-            <span class="subtotal-value">${{ subtotal.toFixed(2) }}</span>
+            <span class="subtotal-value">Bs.{{ subtotal.toFixed(2) }}</span>
           </div>
         </form>
       </div>

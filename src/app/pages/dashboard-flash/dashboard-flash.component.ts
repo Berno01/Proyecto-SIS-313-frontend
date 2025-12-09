@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 interface DashboardFlash {
   total_ganancia: number;
@@ -314,7 +315,7 @@ export class DashboardFlashComponent implements OnInit {
   dashboardData: DashboardFlash | null = null;
   loading = true;
 
-  private apiUrl = 'http://localhost:8080/api/dashboard/flash-ganancias';
+  private apiUrl = `${environment.apiUrl}/dashboard/flash-ganancias`;
 
   constructor(private http: HttpClient) {
     console.log('DashboardFlashComponent constructor ejecutado');

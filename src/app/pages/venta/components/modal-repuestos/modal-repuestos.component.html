@@ -54,7 +54,7 @@
                     {{ repuesto.stockRepuesto }}
                   </span>
                 </td>
-                <td>${{ repuesto.precioSugerido.toFixed(2) }}</td>
+                <td>Bs.{{ repuesto.precioSugerido.toFixed(2) }}</td>
                 <td>
                   <button
                     class="btn-seleccionar"
@@ -87,7 +87,7 @@
             <div class="info-item">
               <span class="label">Precio Sugerido:</span>
               <span class="value precio"
-                >${{ repuestoSeleccionado.precioSugerido.toFixed(2) }}</span
+                >Bs.{{ repuestoSeleccionado.precioSugerido.toFixed(2) }}</span
               >
             </div>
           </div>
@@ -139,7 +139,7 @@
               "
             />
             <small class="hint"
-              >Precio sugerido: ${{
+              >Precio sugerido: Bs.{{
                 repuestoSeleccionado.precioSugerido.toFixed(2)
               }}</small
             >
@@ -161,7 +161,7 @@
 
           <div class="subtotal-display">
             <span class="subtotal-label">Subtotal:</span>
-            <span class="subtotal-value">${{ subtotal.toFixed(2) }}</span>
+            <span class="subtotal-value">Bs.{{ subtotal.toFixed(2) }}</span>
           </div>
         </form>
       </div>
