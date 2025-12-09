@@ -8,5 +8,6 @@ export interface Venta {
   id_venta: number | null;
   nombre_cliente: string;
   total_venta: number;
+  id_usuario: number;
   detalle_venta: DetalleVenta[];
 }

@@ -17,6 +17,7 @@ import { VentaResponse } from './models/venta-response.model';
 import { ModalRepuestosComponent } from './components/modal-repuestos/modal-repuestos.component';
 import { DetalleVentaItemComponent } from './components/detalle-venta-item/detalle-venta-item.component';
 import { forkJoin } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Componente principal para gestionar Ventas
@@ -55,7 +56,8 @@ export class VentaComponent implements OnInit {
     private ventaService: VentaService,
     private repuestoService: RepuestoService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.initForm();
   }
@@ -266,11 +268,22 @@ export class VentaComponent implements OnInit {
       return;
     }
 
-    // Construir objeto venta (no enviar descuento_total desde UI)
+    // Obtener el usuario actual desde AuthService
+    const usuarioActual = this.authService.usuarioActual();
+
+    if (!usuarioActual || !usuarioActual.id) {
+      this.error =
+        'Error: No se pudo obtener el usuario actual. Por favor, inicie sesión nuevamente.';
+      console.error('Usuario no encontrado en AuthService');
+      return;
+    }
+
+    // Construir objeto venta con id_usuario
     const venta: Venta = {
       id_venta: this.ventaId, // Usar el ID si estamos en modo edición
       nombre_cliente: this.ventaForm.get('nombre_cliente')?.value,
       total_venta: this.totalVenta,
+      id_usuario: usuarioActual.id, // Inyectar ID del usuario autenticado
       detalle_venta: this.detalleVenta,
     };
 

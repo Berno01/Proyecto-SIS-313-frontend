@@ -29,6 +29,10 @@ export const routes: Routes = [
   { path: 'repuesto', component: RepuestoFormComponent, canActivate: [authGuard] },
   { path: 'repuesto/:id', component: RepuestoFormComponent, canActivate: [authGuard] },
   { path: 'repuestos/nuevo', component: RepuestoFormCompletoComponent, canActivate: [authGuard] },
-  { path: 'repuestos/editar/:id', component: RepuestoFormCompletoComponent, canActivate: [authGuard] },
+  {
+    path: 'repuestos/editar/:id',
+    component: RepuestoFormCompletoComponent,
+    canActivate: [authGuard],
+  },
   { path: 'dashboard-flash', component: DashboardFlashComponent, canActivate: [authGuard] },
 ];

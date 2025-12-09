@@ -47,9 +47,10 @@ export class LoginComponent {
       error: (error) => {
         console.error('Error en login:', error);
         this.isLoading = false;
-        
+
         if (error.status === 401) {
-          this.errorMessage = 'Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.';
+          this.errorMessage =
+            'Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.';
         } else if (error.status === 400) {
           this.errorMessage = 'Datos inválidos. Por favor, completa todos los campos.';
         } else {

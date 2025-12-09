@@ -8,6 +8,8 @@ export interface VentaResponse {
   fechaVenta: number[]; // Array de 6 números: [año, mes, día, hora, min, seg]
   total: number;
   descuentoTotal: number;
+  username: string; // Usuario que creó/actualizó la venta
+  estadoVenta: boolean;
   detalleVenta: DetalleVentaResponse[];
 }
 
