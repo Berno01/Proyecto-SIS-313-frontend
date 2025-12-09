@@ -8,17 +8,25 @@
 
   <!-- Buscador -->
   <div *ngIf="!isLoading && !errorMessage" class="search-container">
-    <input
-      type="text"
-      class="form-control mb-3"
-      placeholder="Buscar repuesto, auto, sistema..."
-      [(ngModel)]="terminoBusqueda"
-      (input)="onBuscar(terminoBusqueda)"
-      [disabled]="isLoading"
-    />
-    <small class="text-muted" *ngIf="repuestosFiltrados.length !== repuestosOriginal.length">
-      Mostrando {{ repuestosFiltrados.length }} de {{ repuestosOriginal.length }} repuestos
-    </small>
+    <div class="search-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar repuesto, auto, sistema..."
+        [(ngModel)]="terminoBusqueda"
+        (input)="onBuscar(terminoBusqueda)"
+        [disabled]="isLoading"
+      />
+    </div>
+    <div class="search-stats" *ngIf="repuestosFiltrados.length !== repuestosOriginal.length">
+      <span class="stats-text">
+        Mostrando <strong>{{ repuestosFiltrados.length }}</strong> de {{ repuestosOriginal.length }} repuestos
+      </span>
+    </div>
   </div>
 
   <!-- Loading Spinner -->

@@ -17,6 +17,62 @@
   margin: 0;
 }
 
+/* Search Section */
+.search-container {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-wrapper {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #666;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px; /* Pill shape */
+  background-color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.15);
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-stats {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.stats-text strong {
+  color: #333;
+}
+
 /* Buttons */
 .btn-primary {
   background-color: #4caf50;

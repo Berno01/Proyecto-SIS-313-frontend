@@ -72,68 +72,72 @@ interface DashboardFlash {
     `
       .dashboard-container {
         min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-color: #0f172a; /* Slate 900 */
         padding: 2rem;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        color: #f8fafc;
       }
 
       .header {
         text-align: center;
         margin-bottom: 3rem;
+        padding-top: 1rem;
       }
 
       .title {
-        font-size: 3rem;
-        font-weight: 800;
-        color: white;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #f8fafc;
         margin: 0;
+        letter-spacing: -0.025em;
         animation: fadeInDown 0.8s ease-out;
       }
 
       .cards-container {
         display: flex;
         gap: 2rem;
-        max-width: 1400px;
+        max-width: 1200px;
         margin: 0 auto 4rem;
         flex-wrap: wrap;
       }
 
       .card {
         flex: 1;
-        min-width: 350px;
-        background: white;
-        border-radius: 20px;
-        padding: 2.5rem;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-width: 320px;
+        background: #1e293b; /* Slate 800 */
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
         animation: fadeInUp 0.8s ease-out;
       }
 
       .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
       }
 
       .card-green {
-        border-top: 8px solid #10b981;
+        border-top: 4px solid #10b981;
       }
 
       .card-blue {
-        border-top: 8px solid #3b82f6;
+        border-top: 4px solid #38bdf8;
       }
 
       .card-header {
         display: flex;
         align-items: center;
         gap: 1rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
       }
 
       .icon {
-        width: 40px;
-        height: 40px;
-        color: #6b7280;
+        width: 32px;
+        height: 32px;
+        color: #94a3b8;
       }
 
       .card-green .icon {
@@ -141,58 +145,54 @@ interface DashboardFlash {
       }
 
       .card-blue .icon {
-        color: #3b82f6;
+        color: #38bdf8;
       }
 
       .card-title {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        color: #374151;
+        color: #e2e8f0;
         margin: 0;
       }
 
       .card-value {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin: 1rem 0;
-        background: #3375af;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 0.5rem 0 1rem;
+        color: #f8fafc;
+        letter-spacing: -0.025em;
       }
 
       .card-green .card-value {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(to right, #34d399, #10b981);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
       }
 
       .card-blue .card-value {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(to right, #38bdf8, #0ea5e9);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
       }
 
       .card-subtitle {
-        font-size: 1rem;
-        color: #6b7280;
+        font-size: 0.875rem;
+        color: #94a3b8;
         margin: 0;
       }
 
       .loading-section {
         text-align: center;
-        color: white;
-        font-size: 1.5rem;
+        color: #94a3b8;
+        font-size: 1.25rem;
         padding: 3rem;
       }
 
       .spinner {
-        width: 60px;
-        height: 60px;
-        border: 6px solid rgba(255, 255, 255, 0.3);
-        border-top-color: white;
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #38bdf8;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 0 auto 1rem;
@@ -201,34 +201,35 @@ interface DashboardFlash {
       .metrics-placeholder {
         max-width: 800px;
         margin: 0 auto;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 4rem 2rem;
+        background: rgba(30, 41, 59, 0.5); /* Slate 800 with opacity */
+        border-radius: 16px;
+        padding: 3rem 2rem;
         text-align: center;
-        backdrop-filter: blur(10px);
-        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border: 1px dashed rgba(255, 255, 255, 0.1);
       }
 
       .placeholder-icon {
-        font-size: 5rem;
+        font-size: 4rem;
         margin-bottom: 1rem;
-        animation: pulse 2s ease-in-out infinite;
+        opacity: 0.8;
+        animation: pulse 3s ease-in-out infinite;
       }
 
       .placeholder-text {
-        font-size: 1.75rem;
-        color: white;
+        font-size: 1.5rem;
+        color: #e2e8f0;
         font-weight: 600;
-        margin: 0 0 2rem;
-        opacity: 0.9;
+        margin: 0 0 1.5rem;
       }
 
       .placeholder-bar {
-        height: 8px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
         overflow: hidden;
         position: relative;
+        max-width: 400px;
+        margin: 0 auto;
       }
 
       .placeholder-bar::after {
@@ -238,14 +239,14 @@ interface DashboardFlash {
         left: 0;
         height: 100%;
         width: 40%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
         animation: shimmer 2s infinite;
       }
 
       @keyframes fadeInDown {
         from {
           opacity: 0;
-          transform: translateY(-30px);
+          transform: translateY(-20px);
         }
         to {
           opacity: 1;
@@ -256,7 +257,7 @@ interface DashboardFlash {
       @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(20px);
         }
         to {
           opacity: 1;
@@ -273,12 +274,12 @@ interface DashboardFlash {
       @keyframes pulse {
         0%,
         100% {
-          opacity: 1;
+          opacity: 0.8;
           transform: scale(1);
         }
         50% {
-          opacity: 0.7;
-          transform: scale(1.05);
+          opacity: 0.5;
+          transform: scale(0.95);
         }
       }
 
