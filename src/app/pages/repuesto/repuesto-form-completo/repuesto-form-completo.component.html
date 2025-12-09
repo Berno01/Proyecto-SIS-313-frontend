@@ -2,9 +2,7 @@
   <!-- Header -->
   <div class="header">
     <h1>{{ modoEdicion ? 'Editar Repuesto' : 'Crear Nuevo Repuesto' }}</h1>
-    <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isSaving">
-      Cancelar
-    </button>
+    <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isSaving">Cancelar</button>
   </div>
 
   <!-- Loading State -->
@@ -69,9 +67,7 @@
               [class.is-invalid]="esInvalido('costoRepuesto')"
             />
           </div>
-          <div class="invalid-feedback" *ngIf="esInvalido('costoRepuesto')">
-            Costo requerido
-          </div>
+          <div class="invalid-feedback" *ngIf="esInvalido('costoRepuesto')">Costo requerido</div>
         </div>
 
         <div class="form-group col-md-6">
@@ -170,10 +166,7 @@
               + Agregar Categorías
             </button>
 
-            <div
-              *ngIf="esInvalido('idsCategorias')"
-              class="invalid-feedback d-block"
-            >
+            <div *ngIf="esInvalido('idsCategorias')" class="invalid-feedback d-block">
               Debe seleccionar al menos una categoría
             </div>
           </div>
@@ -276,7 +269,9 @@
 
         <!-- Empty State -->
         <div *ngIf="compatibilidades.length === 0" class="empty-state">
-          <p>No hay compatibilidades definidas. Haga clic en "Agregar Compatibilidad" para comenzar.</p>
+          <p>
+            No hay compatibilidades definidas. Haga clic en "Agregar Compatibilidad" para comenzar.
+          </p>
         </div>
       </div>
     </div>
@@ -288,7 +283,7 @@
       </button>
       <button type="submit" class="btn btn-primary" [disabled]="isSaving || repuestoForm.invalid">
         <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
-        {{ isSaving ? 'Guardando...' : (modoEdicion ? 'Actualizar' : 'Guardar') }}
+        {{ isSaving ? 'Guardando...' : modoEdicion ? 'Actualizar' : 'Guardar' }}
       </button>
     </div>
   </form>
@@ -299,13 +294,7 @@
   <div class="modal-selector" (click)="$event.stopPropagation()">
     <div class="modal-selector-header">
       <h5>Seleccionar Categorías</h5>
-      <button
-        type="button"
-        class="btn-close-modal"
-        (click)="cerrarSelectorCategorias()"
-      >
-        ×
-      </button>
+      <button type="button" class="btn-close-modal" (click)="cerrarSelectorCategorias()">×</button>
     </div>
     <div class="modal-selector-body">
       <div class="categorias-grid">
@@ -322,11 +311,7 @@
           <span>{{ categoria.nombre }}</span>
         </label>
       </div>
-      <button
-        type="button"
-        class="btn btn-success btn-sm mt-3"
-        (click)="abrirModalCategoria()"
-      >
+      <button type="button" class="btn btn-success btn-sm mt-3" (click)="abrirModalCategoria()">
         + Crear Nueva Categoría
       </button>
     </div>

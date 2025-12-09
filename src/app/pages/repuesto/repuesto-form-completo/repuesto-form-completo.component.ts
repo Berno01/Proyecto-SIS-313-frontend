@@ -1,12 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  FormArray,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RepuestoService } from '../services/repuesto.service';
 import { CategoriaService } from '../../categoria/services/categoria.service';
@@ -258,7 +252,7 @@ export class RepuestoFormCompletoComponent implements OnInit {
    */
   onCategoriaCreada(categoria: Categoria): void {
     console.log('Categoría creada:', categoria);
-    
+
     // Agregar a la lista (verificar que sea un array)
     if (Array.isArray(this.listaCategorias)) {
       this.listaCategorias.push(categoria);
@@ -266,9 +260,7 @@ export class RepuestoFormCompletoComponent implements OnInit {
 
     // Agregar el ID al array de IDs seleccionados
     const categoriasActuales = this.repuestoForm.get('idsCategorias')?.value || [];
-    this.repuestoForm
-      .get('idsCategorias')
-      ?.setValue([...categoriasActuales, categoria.id]);
+    this.repuestoForm.get('idsCategorias')?.setValue([...categoriasActuales, categoria.id]);
 
     // Cerrar modal
     this.modalCategoriaVisible = false;
@@ -279,7 +271,7 @@ export class RepuestoFormCompletoComponent implements OnInit {
    */
   onSistemaCreado(sistema: Sistema): void {
     console.log('Sistema creado:', sistema);
-    
+
     // Agregar a la lista (verificar que sea un array)
     if (Array.isArray(this.listaSistemas)) {
       this.listaSistemas.push(sistema);
@@ -297,7 +289,7 @@ export class RepuestoFormCompletoComponent implements OnInit {
    */
   onVehiculoCreado(vehiculo: Vehiculo): void {
     console.log('Vehículo creado:', vehiculo);
-    
+
     // Agregar a la lista (verificar que sea un array)
     if (Array.isArray(this.listaVehiculos)) {
       this.listaVehiculos.push(vehiculo);

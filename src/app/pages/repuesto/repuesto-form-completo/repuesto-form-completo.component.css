@@ -589,7 +589,7 @@
   background-color: #e7f3ff;
 }
 
-.categoria-card input[type="checkbox"] {
+.categoria-card input[type='checkbox'] {
   cursor: pointer;
   width: 18px;
   height: 18px;

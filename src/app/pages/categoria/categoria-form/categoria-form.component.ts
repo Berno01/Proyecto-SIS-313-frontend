@@ -116,7 +116,7 @@ export class CategoriaFormComponent implements OnInit {
     } else {
       // Crear nueva categoría
       const request: any = {
-        nombre_categoria: formValue.nombreCategoria
+        nombre_categoria: formValue.nombreCategoria,
       };
       this.categoriaService.crearCategoria(request).subscribe({
         next: (response) => {

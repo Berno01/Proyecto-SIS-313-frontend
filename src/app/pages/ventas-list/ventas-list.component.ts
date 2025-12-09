@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { VentaService } from '../venta/services/venta.service';
 import { VentaResponse } from '../venta/models/venta-response.model';
 import { formatFechaVenta } from '../venta/utils/date-formatter';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Componente para mostrar el historial de ventas
@@ -20,10 +21,22 @@ export class VentasListComponent implements OnInit {
   loading: boolean = false;
   error: string = '';
 
-  constructor(private ventaService: VentaService, private router: Router) {}
+  constructor(
+    private ventaService: VentaService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.cargarVentas();
+  }
+
+  /**
+   * Verifica si el usuario actual es ADMIN
+   */
+  get esAdmin(): boolean {
+    const usuario = this.authService.usuarioActual();
+    return usuario?.rol === 'ADMIN';
   }
 
   /**

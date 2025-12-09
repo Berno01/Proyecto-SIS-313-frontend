@@ -138,9 +138,7 @@ export class RepuestoService {
    * @param repuesto Objeto en camelCase
    * @returns Objeto en snake_case
    */
-  private convertirRepuestoCompletoASnakeCase(
-    repuesto: RepuestoCompleto
-  ): any {
+  private convertirRepuestoCompletoASnakeCase(repuesto: RepuestoCompleto): any {
     return {
       id_repuesto: repuesto.idRepuesto,
       nombre_repuesto: repuesto.nombreRepuesto,
@@ -165,9 +163,7 @@ export class RepuestoService {
    * @param repuesto Objeto en camelCase
    * @returns Objeto en snake_case
    */
-  private convertirRepuestoCompletoASnakeCaseParaCrear(
-    repuesto: RepuestoCompleto
-  ): any {
+  private convertirRepuestoCompletoASnakeCaseParaCrear(repuesto: RepuestoCompleto): any {
     return {
       nombre_repuesto: repuesto.nombreRepuesto,
       stock_actual: repuesto.stockActual,

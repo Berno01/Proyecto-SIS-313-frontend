@@ -28,16 +28,14 @@ export class CategoriaService {
    * @returns Observable con array de categorías (camelCase)
    */
   getAllCategorias(): Observable<Categoria[]> {
-    return this.http
-      .get<ApiResponse<any[]>>(`${this.baseUrl}/findAll`)
-      .pipe(
-        map((response) =>
-          response.data.map((cat: any) => ({
-            id: cat.idCategoria || cat.id,
-            nombre: cat.nombreCategoria || cat.nombre,
-          }))
-        )
-      );
+    return this.http.get<ApiResponse<any[]>>(`${this.baseUrl}/findAll`).pipe(
+      map((response) =>
+        response.data.map((cat: any) => ({
+          id: cat.idCategoria || cat.id,
+          nombre: cat.nombreCategoria || cat.nombre,
+        }))
+      )
+    );
   }
 
   /**
