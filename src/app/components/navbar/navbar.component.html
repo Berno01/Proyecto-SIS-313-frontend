@@ -1,0 +1,90 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <a routerLink="/" class="navbar-logo">
+      <span class="logo-text">Tienda de repuestos</span>
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" (click)="toggleMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <!-- Navbar Links -->
+    <ul class="navbar-menu" [class.active]="isMenuOpen">
+      <li class="navbar-item">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="navbar-link"
+          (click)="isMenuOpen = false"
+        >
+          Dashboard
+        </a>
+      </li>
+
+      <li class="navbar-item">
+        <a
+          routerLink="/ventas"
+          routerLinkActive="active"
+          class="navbar-link"
+          (click)="isMenuOpen = false"
+        >
+          Ventas
+        </a>
+      </li>
+
+      <li class="navbar-item">
+        <a
+          routerLink="/compras"
+          routerLinkActive="active"
+          class="navbar-link"
+          (click)="isMenuOpen = false"
+        >
+          Compras
+        </a>
+      </li>
+
+      <!-- Dropdown Catalogo -->
+      <li
+        class="navbar-item dropdown"
+        (mouseenter)="isDropdownOpen = true"
+        (mouseleave)="isDropdownOpen = false"
+      >
+        <a
+          class="navbar-link dropdown-toggle"
+          [class.active]="rlaCategorias.isActive || rlaRepuestos.isActive"
+        >
+          Catálogo ▾
+        </a>
+        <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+          <li>
+            <a
+              routerLink="/categorias"
+              routerLinkActive="active"
+              #rlaCategorias="routerLinkActive"
+              class="dropdown-link"
+              (click)="isMenuOpen = false; isDropdownOpen = false"
+            >
+              Categorías
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/repuestos"
+              routerLinkActive="active"
+              #rlaRepuestos="routerLinkActive"
+              class="dropdown-link"
+              (click)="isMenuOpen = false; isDropdownOpen = false"
+            >
+              Repuestos
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,77 @@
+<div class="categoria-form-container">
+  <div class="form-header">
+    <h1>{{ modoEdicion ? 'Editar Categoría' : 'Nueva Categoría' }}</h1>
+    <button class="btn-back" (click)="cancelar()">← Volver a la lista</button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos de la categoría...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Formulario -->
+  <div *ngIf="!isLoading" class="form-card">
+    <form [formGroup]="categoriaForm" (ngSubmit)="guardarCategoria()">
+      <!-- ID Categoria (hidden) -->
+      <input type="hidden" formControlName="idCategoria" />
+
+      <!-- Nombre Categoria -->
+      <div class="form-group">
+        <label for="nombreCategoria"> Nombre de Categoría <span class="required">*</span> </label>
+        <input
+          type="text"
+          id="nombreCategoria"
+          formControlName="nombreCategoria"
+          placeholder="Ej: Filtros, Frenos, Bujías"
+          [class.error]="mostrarError('nombreCategoria')"
+          [disabled]="isSaving"
+        />
+
+        <div *ngIf="mostrarError('nombreCategoria')" class="error-text">
+          {{ obtenerMensajeError('nombreCategoria') }}
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="form-info" *ngIf="modoEdicion">
+        <p><strong>ID:</strong> {{ categoriaForm.get('idCategoria')?.value }}</p>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <button type="submit" class="btn-submit" [disabled]="isSaving || categoriaForm.invalid">
+          <span *ngIf="!isSaving">
+            {{ modoEdicion ? 'Actualizar Categoría' : 'Guardar Categoría' }}
+          </span>
+          <span *ngIf="isSaving"> <span class="spinner-small"></span> Guardando... </span>
+        </button>
+
+        <button type="button" class="btn-cancel" (click)="cancelar()" [disabled]="isSaving">
+          ❌ Cancelar
+        </button>
+      </div>
+
+      <!-- Validación del formulario -->
+      <div class="form-validation-summary" *ngIf="categoriaForm.invalid && categoriaForm.touched">
+        <p>⚠️ Por favor, corrija los errores antes de continuar:</p>
+        <ul>
+          <li *ngIf="categoriaForm.get('nombreCategoria')?.hasError('required')">
+            El nombre de la categoría es requerido
+          </li>
+          <li *ngIf="categoriaForm.get('nombreCategoria')?.hasError('minlength')">
+            El nombre debe tener al menos 3 caracteres
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+
+  <!-- Ayuda -->
+  
+</div>
