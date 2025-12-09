@@ -1,0 +1,63 @@
+<!-- Backdrop -->
+<div class="modal-backdrop" *ngIf="visible" (click)="cancelar()"></div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="visible" *ngIf="visible">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Crear Nueva Categoría</h5>
+        <button type="button" class="btn-close" (click)="cancelar()" [disabled]="guardando">
+          ×
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form [formGroup]="formulario">
+          <div class="form-group">
+            <label for="nombreCategoria">Nombre de la Categoría *</label>
+            <input
+              type="text"
+              id="nombreCategoria"
+              class="form-control"
+              formControlName="nombreCategoria"
+              placeholder="Ej: Frenos, Suspensión, Motor"
+              [class.is-invalid]="esInvalido('nombreCategoria')"
+            />
+            <div class="invalid-feedback" *ngIf="esInvalido('nombreCategoria')">
+              El nombre debe tener al menos 3 caracteres
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div class="alert alert-danger" *ngIf="errorMensaje">
+            {{ errorMensaje }}
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelar()"
+          [disabled]="guardando"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="guardar()"
+          [disabled]="guardando || formulario.invalid"
+        >
+          <span *ngIf="guardando" class="spinner-border spinner-border-sm me-2"></span>
+          {{ guardando ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="repuesto-list-container">
+  <div class="header">
+    <h1>Gestión de Repuestos</h1>
+    <button class="btn-primary" (click)="nuevoRepuesto()" [disabled]="isLoading">
+      + Nuevo Repuesto
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <div *ngIf="!isLoading && !errorMessage" class="search-container">
+    <input
+      type="text"
+      class="form-control mb-3"
+      placeholder="Buscar repuesto, auto, sistema..."
+      [(ngModel)]="terminoBusqueda"
+      (input)="onBuscar(terminoBusqueda)"
+      [disabled]="isLoading"
+    />
+    <small class="text-muted" *ngIf="repuestosFiltrados.length !== repuestosOriginal.length">
+      Mostrando {{ repuestosFiltrados.length }} de {{ repuestosOriginal.length }} repuestos
+    </small>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando repuestos...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    {{ errorMessage }}
+    <button class="btn-retry" (click)="cargarCatalogoBusqueda()">Reintentar</button>
+  </div>
+
+  <!-- Repuestos Table -->
+  <div *ngIf="!isLoading && !errorMessage" class="table-container">
+    <table *ngIf="repuestosFiltrados.length > 0" class="repuestos-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Repuesto</th>
+          <th>Stock</th>
+          <th>Precio</th>
+          <th>Sistema</th>
+          <th>Compatibilidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let repuesto of repuestosFiltrados">
+          <td>{{ repuesto.id }}</td>
+          <td class="nombre-repuesto">{{ repuesto.nombre }}</td>
+          <td class="text-center">
+            <span [ngClass]="obtenerClaseStock(repuesto.stock)">
+              {{ repuesto.stock }}
+            </span>
+          </td>
+          <td class="text-right">Bs.{{ repuesto.precio.toFixed(2) }}</td>
+          <td class="sistema-cell">{{ repuesto.sistema }}</td>
+          <td class="compatibilidad-cell">{{ repuesto.compatibilidad_resumen }}</td>
+          <td class="actions">
+            <button class="btn-edit" (click)="editarRepuesto(repuesto.id)" title="Editar repuesto">
+              Editar
+            </button>
+            <button
+              class="btn-delete"
+              (click)="eliminarRepuesto(repuesto.id, repuesto.nombre)"
+              title="Eliminar repuesto"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="repuestosFiltrados.length === 0 && repuestosOriginal.length === 0"
+      class="empty-state"
+    >
+      <p>No hay repuestos registrados</p>
+      <button class="btn-primary" (click)="nuevoRepuesto()">Crear primer repuesto</button>
+    </div>
+
+    <!-- No Results State -->
+    <div
+      *ngIf="repuestosFiltrados.length === 0 && repuestosOriginal.length > 0"
+      class="empty-state"
+    >
+      <p>No se encontraron repuestos con el término "{{ terminoBusqueda }}"</p>
+      <button class="btn-secondary" (click)="terminoBusqueda = ''; onBuscar('')">
+        Limpiar búsqueda
+      </button>
+    </div>
+  </div>
+</div>

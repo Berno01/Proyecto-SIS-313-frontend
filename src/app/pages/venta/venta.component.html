@@ -1,0 +1,115 @@
+<div class="venta-container">
+  <!-- Breadcrumb / Botón Volver -->
+  <div class="breadcrumb">
+    <button class="btn-back" (click)="volverAlHistorial()">← Volver al Historial</button>
+  </div>
+
+  <div class="page-header">
+    <h1>{{ modoEdicion ? 'Editar Venta #' + ventaId : 'Nueva Venta' }}</h1>
+  </div>
+
+  <!-- Mensajes -->
+  <div *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Formulario Principal -->
+  <form [formGroup]="ventaForm" class="venta-form">
+    <!-- Información del Cliente -->
+    <div class="form-section">
+      <h2>Información del Cliente</h2>
+
+      <div class="form-group">
+        <label for="nombre_cliente">Nombre del Cliente *</label>
+        <input
+          type="text"
+          id="nombre_cliente"
+          formControlName="nombre_cliente"
+          class="form-control"
+          [class.invalid]="
+            ventaForm.get('nombre_cliente')?.invalid && ventaForm.get('nombre_cliente')?.touched
+          "
+          placeholder="Ingrese el nombre del cliente"
+        />
+        <div
+          *ngIf="
+            ventaForm.get('nombre_cliente')?.invalid && ventaForm.get('nombre_cliente')?.touched
+          "
+          class="validation-error"
+        >
+          <span *ngIf="ventaForm.get('nombre_cliente')?.hasError('required')">
+            El nombre del cliente es requerido
+          </span>
+          <span *ngIf="ventaForm.get('nombre_cliente')?.hasError('minlength')">
+            El nombre debe tener al menos 3 caracteres
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalle de Venta -->
+    <div class="form-section">
+      <div class="section-header">
+        <h2>Detalle de Venta</h2>
+        <button type="button" class="btn btn-add" (click)="abrirModalRepuestos()">
+          + Agregar Repuesto
+        </button>
+      </div>
+
+      <!-- Lista de Repuestos -->
+      <div class="detalle-lista">
+        <div *ngIf="detalleVenta.length === 0" class="empty-state">
+          <p>No hay repuestos agregados</p>
+          <p class="hint">Haga clic en "Agregar Repuesto" para comenzar</p>
+        </div>
+
+        <app-detalle-venta-item
+          *ngFor="let detalle of detalleVenta; let i = index"
+          [detalle]="detalle"
+          [repuesto]="getRepuesto(detalle.id_repuesto)"
+          [index]="i"
+          (detalleChange)="onDetalleChange()"
+          (eliminar)="eliminarItem($event)"
+        ></app-detalle-venta-item>
+      </div>
+    </div>
+
+    <!-- Resumen de Totales -->
+    <div class="form-section totales-section" *ngIf="detalleVenta.length > 0">
+      <div class="totales-grid">
+        <div class="total-row total-final">
+          <span class="total-label">TOTAL:</span>
+          <span class="total-value-final">Bs.{{ totalVenta.toFixed(2) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-cancel" (click)="cancelar()" [disabled]="loading">
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-submit"
+        (click)="guardarVenta()"
+        [disabled]="loading || detalleVenta.length === 0"
+      >
+        <span *ngIf="!loading">{{ modoEdicion ? 'Actualizar Venta' : 'Guardar Venta' }}</span>
+        <span *ngIf="loading">{{ modoEdicion ? 'Actualizando...' : 'Guardando...' }}</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Modal de Repuestos -->
+  <app-modal-repuestos
+    *ngIf="mostrarModal"
+    (close)="cerrarModal()"
+    (repuestoAgregado)="agregarRepuestoAlDetalle($event)"
+  ></app-modal-repuestos>
+</div>

@@ -1,0 +1,78 @@
+<!-- Backdrop -->
+<div class="modal-backdrop" *ngIf="visible" (click)="cancelar()"></div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="visible" *ngIf="visible">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Crear Nuevo Vehículo</h5>
+        <button type="button" class="btn-close" (click)="cancelar()" [disabled]="guardando">
+          ×
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form [formGroup]="formulario">
+          <div class="form-group mb-3">
+            <label for="marca">Marca *</label>
+            <input
+              type="text"
+              id="marca"
+              class="form-control"
+              formControlName="marca"
+              placeholder="Ej: TOYOTA, HONDA, FORD"
+              [class.is-invalid]="esInvalido('marca')"
+            />
+            <div class="invalid-feedback" *ngIf="esInvalido('marca')">
+              La marca debe tener al menos 2 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="modelo">Modelo *</label>
+            <input
+              type="text"
+              id="modelo"
+              class="form-control"
+              formControlName="modelo"
+              placeholder="Ej: COROLLA, CIVIC, F-150"
+              [class.is-invalid]="esInvalido('modelo')"
+            />
+            <div class="invalid-feedback" *ngIf="esInvalido('modelo')">
+              El modelo debe tener al menos 2 caracteres
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div class="alert alert-danger mt-3" *ngIf="errorMensaje">
+            {{ errorMensaje }}
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelar()"
+          [disabled]="guardando"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="guardar()"
+          [disabled]="guardando || formulario.invalid"
+        >
+          <span *ngIf="guardando" class="spinner-border spinner-border-sm me-2"></span>
+          {{ guardando ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

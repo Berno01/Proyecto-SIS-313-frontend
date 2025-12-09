@@ -1,0 +1,38 @@
+<div class="detalle-item">
+  <div class="item-info">
+    <span class="nombre">{{ repuesto.nombreRepuesto }}</span>
+  </div>
+
+  <div class="item-controls">
+    <div class="input-group">
+      <label>Cantidad</label>
+      <input
+        type="number"
+        [(ngModel)]="detalle.cantidad"
+        (ngModelChange)="onCantidadChange()"
+        min="1"
+        class="input-small"
+      />
+      <span class="stock-info">Stock: {{ repuesto.stockRepuesto }}</span>
+    </div>
+
+    <div class="input-group">
+      <label>Costo</label>
+      <input
+        type="number"
+        [(ngModel)]="detalle.costo_repuesto"
+        (ngModelChange)="onCostoChange()"
+        min="0.01"
+        step="0.01"
+        class="input-medium"
+      />
+    </div>
+
+    <div class="subtotal">
+      <label>Subtotal</label>
+      <span class="total-value">Bs.{{ detalle.total.toFixed(2) }}</span>
+    </div>
+
+    <button type="button" (click)="onEliminar()" class="btn-delete" title="Eliminar item">✕</button>
+  </div>
+</div>
