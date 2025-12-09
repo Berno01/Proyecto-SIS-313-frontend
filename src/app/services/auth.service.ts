@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 /**
@@ -13,10 +13,21 @@ export interface LoginCredentials {
 }
 
 /**
- * Interfaz para el usuario autenticado
+ * Interfaz para la respuesta del backend (snake_case)
+ */
+interface UsuarioResponse {
+  id_usuario: number;
+  username: string;
+  nombre_completo: string;
+  rol: string;
+}
+
+/**
+ * Interfaz para el usuario autenticado (camelCase para uso interno)
  */
 export interface Usuario {
   id: number;
+  id_usuario: number; // Mantener ambos para compatibilidad
   username: string;
   nombre_completo: string;
   rol: string;
@@ -41,10 +52,19 @@ export class AuthService {
    * @returns Observable con los datos del usuario
    */
   login(credentials: LoginCredentials): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.baseUrl}/login`, credentials).pipe(
-      tap((usuario) => {
+    return this.http.post<UsuarioResponse>(`${this.baseUrl}/login`, credentials).pipe(
+      map((response) => {
+        // Mapear respuesta del backend a formato interno
+        const usuario: Usuario = {
+          id: response.id_usuario,
+          id_usuario: response.id_usuario,
+          username: response.username,
+          nombre_completo: response.nombre_completo,
+          rol: response.rol,
+        };
         // Guardar usuario en localStorage
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(usuario));
+        return usuario;
       })
     );
   }

@@ -152,6 +152,12 @@
   font-weight: 600;
 }
 
+.usuario-cell {
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .acciones-cell {
   display: flex;
   gap: 8px;
