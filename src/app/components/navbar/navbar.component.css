@@ -139,6 +139,31 @@
   font-weight: 600;
 }
 
+/* Botón de Logout */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e74c3c !important;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #e74c3c !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.btn-logout svg {
+  width: 16px;
+  height: 16px;
+}
+
 /* Mobile Menu Button */
 .mobile-menu-btn {
   display: none;

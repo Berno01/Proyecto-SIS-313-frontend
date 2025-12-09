@@ -10,22 +10,25 @@ import { RepuestoListComponent } from './pages/repuesto/repuesto-list/repuesto-l
 import { RepuestoFormComponent } from './pages/repuesto/repuesto-form/repuesto-form.component';
 import { RepuestoFormCompletoComponent } from './pages/repuesto/repuesto-form-completo/repuesto-form-completo.component';
 import { DashboardFlashComponent } from './pages/dashboard-flash/dashboard-flash.component';
+import { LoginComponent } from './pages/login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'dashboard-flash', pathMatch: 'full' },
-  { path: 'ventas', component: VentasListComponent },
-  { path: 'venta', component: VentaComponent },
-  { path: 'venta/:id', component: VentaComponent },
-  { path: 'compras', component: ComprasListComponent },
-  { path: 'compra', component: CompraComponent },
-  { path: 'compra/:id', component: CompraComponent },
-  { path: 'categorias', component: CategoriaListComponent },
-  { path: 'categoria', component: CategoriaFormComponent },
-  { path: 'categoria/:id', component: CategoriaFormComponent },
-  { path: 'repuestos', component: RepuestoListComponent },
-  { path: 'repuesto', component: RepuestoFormComponent },
-  { path: 'repuesto/:id', component: RepuestoFormComponent },
-  { path: 'repuestos/nuevo', component: RepuestoFormCompletoComponent },
-  { path: 'repuestos/editar/:id', component: RepuestoFormCompletoComponent },
-  { path: 'dashboard-flash', component: DashboardFlashComponent },
+  { path: 'ventas', component: VentasListComponent, canActivate: [authGuard] },
+  { path: 'venta', component: VentaComponent, canActivate: [authGuard] },
+  { path: 'venta/:id', component: VentaComponent, canActivate: [authGuard] },
+  { path: 'compras', component: ComprasListComponent, canActivate: [authGuard] },
+  { path: 'compra', component: CompraComponent, canActivate: [authGuard] },
+  { path: 'compra/:id', component: CompraComponent, canActivate: [authGuard] },
+  { path: 'categorias', component: CategoriaListComponent, canActivate: [authGuard] },
+  { path: 'categoria', component: CategoriaFormComponent, canActivate: [authGuard] },
+  { path: 'categoria/:id', component: CategoriaFormComponent, canActivate: [authGuard] },
+  { path: 'repuestos', component: RepuestoListComponent, canActivate: [authGuard] },
+  { path: 'repuesto', component: RepuestoFormComponent, canActivate: [authGuard] },
+  { path: 'repuesto/:id', component: RepuestoFormComponent, canActivate: [authGuard] },
+  { path: 'repuestos/nuevo', component: RepuestoFormCompletoComponent, canActivate: [authGuard] },
+  { path: 'repuestos/editar/:id', component: RepuestoFormCompletoComponent, canActivate: [authGuard] },
+  { path: 'dashboard-flash', component: DashboardFlashComponent, canActivate: [authGuard] },
 ];

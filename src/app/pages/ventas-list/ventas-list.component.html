@@ -32,7 +32,7 @@
           <th>Fecha</th>
           <th>Total</th>
           <th>Descuento</th>
-          <th>Acciones</th>
+          <th *ngIf="esAdmin">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +47,7 @@
             </span>
             <span *ngIf="venta.descuentoTotal === 0">-</span>
           </td>
-          <td class="acciones-cell">
+          <td class="acciones-cell" *ngIf="esAdmin">
             <button
               class="btn-action btn-edit"
               (click)="editarVenta(venta.idVenta)"
