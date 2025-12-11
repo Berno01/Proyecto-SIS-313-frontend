@@ -54,7 +54,7 @@
         (mouseenter)="isDropdownOpen = true"
         (mouseleave)="isDropdownOpen = false"
       >
-        <a class="navbar-link dropdown-toggle"> Catálogo </a>
+        <a class="navbar-link dropdown-toggle" (click)="toggleDropdown()"> Catálogo </a>
         <ul class="dropdown-menu" [class.show]="isDropdownOpen">
           <li *ngIf="esAdmin">
             <a

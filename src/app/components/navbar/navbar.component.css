@@ -110,7 +110,7 @@
 }
 
 .dropdown-toggle::after {
-  content: "▾";
+  content: '▾';
   position: absolute;
   right: 12px;
   font-size: 10px;
@@ -265,7 +265,7 @@
     color: var(--text-color);
     background-color: rgba(255, 255, 255, 0.05);
   }
-  
+
   .btn-logout {
     margin-left: 0;
     margin-top: 12px;
